@@ -48,16 +48,22 @@ export default function Game() {
       // Basic check, in production we strictly check origin
       if (event.origin !== splashHubUrl && event.origin !== new URL(splashHubUrl).origin) return;
 
+      let data;
       try {
-        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-        
+        data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+      } catch (parseErr) {
+        // Not a JSON message (e.g. starter-app:height#1126), ignore safely.
+        return;
+      }
+
+      try {
         if (data.type === 'bridge_ready' || data === 'bridge_ready') {
             event.source.postMessage(JSON.stringify({ type: 'init_host' }), '*');
             setDebugLogs(prev => [...prev, `SNT: init_host`]);
         }
         
-        // Assuming payload has { type: 'prediction_submit', predictions: [...] }
-        if (data.type === 'prediction_submit') {
+        // Listen for the actual game engine 'submit' event
+        if (data.type === 'submit' || data.type === 'prediction_submit') {
           setSaveStatus('Saving predictions...');
           
           await setDoc(doc(db, `deployments/${deploymentId}/games/${gameId}/predictions`, user.email), {
@@ -65,7 +71,7 @@ export default function Game() {
             email: user.email,
             displayName: user.displayName || '',
             submittedAt: serverTimestamp(),
-            payload: data.predictions
+            payload: data
           });
           
           setSaveStatus('Predictions saved successfully!');

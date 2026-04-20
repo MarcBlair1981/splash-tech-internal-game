@@ -198,6 +198,17 @@ function GamesTab({ deploymentId }) {
     }
   };
 
+  const handleDeleteGame = async (id) => {
+    if (!confirm('Are you sure you want to delete this game?')) return;
+    try {
+      await deleteDoc(doc(db, `deployments/${deploymentId}/games`, id));
+      fetchGames();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to delete game: ' + err.message);
+    }
+  };
+
   return (
     <div className="animate-fade-in">
       <h2 className="mb-6">Manage Games</h2>
@@ -259,7 +270,7 @@ function GamesTab({ deploymentId }) {
                     </div>
                   </td>
                   <td>
-                    <button className="text-xs text-muted hover:text-white">Edit</button>
+                    <button onClick={() => handleDeleteGame(g.id)} style={{ color: 'var(--color-danger)', background: 'transparent', border: 'none', cursor: 'pointer' }} className="text-xs hover:text-white">Delete</button>
                   </td>
                 </tr>
               ))}

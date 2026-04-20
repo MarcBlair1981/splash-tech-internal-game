@@ -183,7 +183,7 @@ function GamesTab({ deploymentId }) {
       fetchGames();
     } catch (err) {
       console.error(err);
-      alert('Failed to add game');
+      alert('Failed to add game: ' + err.message);
     }
   };
 

@@ -74,11 +74,17 @@ export const AuthProvider = ({ children }) => {
         if (allowlistSnap.exists()) {
           const data = allowlistSnap.data();
           setRole(data.role); // 'admin' or 'player'
+        } else if (currentUser.email.endsWith('@splash.tech')) {
+          setRole('player');
         } else {
           setRole(null); // Explicitly forbidden
         }
       } else {
-        setRole(null);
+        if (currentUser.email.endsWith('@splash.tech')) {
+          setRole('player');
+        } else {
+          setRole(null);
+        }
       }
     } catch (err) {
       console.error("Error checking role:", err);

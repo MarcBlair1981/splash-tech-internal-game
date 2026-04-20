@@ -83,7 +83,8 @@ export default function Game() {
 
   // Render iframe URL
   const hubUrl = import.meta.env.VITE_SPLASH_HUB_URL || 'https://hub.splash.tech';
-  const iframeSrc = `${hubUrl}?token=${config.sharedToken || ''}&gameUuid=${game.gameUuid || ''}&language=en&bg=000C35`;
+  const sharedToken = config.sharedToken || import.meta.env.VITE_SHARED_TOKEN || '';
+  const iframeSrc = `${hubUrl}?token=${sharedToken}&gameUuid=${game.gameUuid || ''}&language=en`;
 
   return (
     <div className="animate-fade-in flex flex-col" style={{ height: 'calc(100vh - 120px)' }}>

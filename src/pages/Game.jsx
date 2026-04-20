@@ -13,7 +13,7 @@ export default function Game() {
   const [loading, setLoading] = useState(true);
 
   // Manual picks state
-  const [picks, setPicks] = useState(['', '', '', '', '']);
+  const [picks, setPicks] = useState(['', '', '', '', '', '']);
   const [notes, setNotes] = useState('');
   const [saving, setSaving] = useState(false);
   const [savedPicks, setSavedPicks] = useState(null); // confirmed picks from DB
@@ -50,7 +50,7 @@ export default function Game() {
         if (predSnap.exists()) {
           const data = predSnap.data();
           setSavedPicks(data);
-          setPicks(data.picks || ['', '', '', '', '']);
+          setPicks(data.picks || ['', '', '', '', '', '']);
           setNotes(data.notes || '');
           setPicksSaved(true);
         }
@@ -204,7 +204,7 @@ export default function Game() {
               {editing ? 'Edit Your Picks' : 'Submit Your Picks'}
             </h3>
             <p style={{ fontSize: '0.82rem', marginBottom: '20px' }}>
-              Enter your selections below (up to 5). These will be recorded against your name.
+              Enter your selections below (up to 6). These will be recorded against your name.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>

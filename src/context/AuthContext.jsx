@@ -33,7 +33,9 @@ export const AuthProvider = ({ children }) => {
         const docRef = doc(db, 'deployments', d);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setConfig(docSnap.data().config);
+          setConfig(docSnap.data().config || {});
+        } else {
+          setConfig({});
         }
       } catch (err) {
         console.error("Failed to fetch deployment config", err);

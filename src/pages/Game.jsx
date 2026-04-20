@@ -34,17 +34,27 @@ export default function Game() {
     fetchGame();
   }, [deploymentId, gameId, navigate]);
 
+  const [debugLogs, setDebugLogs] = useState([]);
+  
   useEffect(() => {
     // Listen for iframe messages to capture predictions
     const handleMessage = async (event) => {
       // Allow specific origin or localhost for testing
       const splashHubUrl = import.meta.env.VITE_SPLASH_HUB_URL || 'https://hub.splash.tech';
       
+      const rawData = typeof event.data === 'string' ? event.data : JSON.stringify(event.data);
+      setDebugLogs(prev => [...prev, `RCV: ${rawData}`]);
+
       // Basic check, in production we strictly check origin
-      if (event.origin !== splashHubUrl) return;
+      if (event.origin !== splashHubUrl && event.origin !== new URL(splashHubUrl).origin) return;
 
       try {
         const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+        
+        if (data.type === 'bridge_ready' || data === 'bridge_ready') {
+            event.source.postMessage(JSON.stringify({ type: 'init_host' }), '*');
+            setDebugLogs(prev => [...prev, `SNT: init_host`]);
+        }
         
         // Assuming payload has { type: 'prediction_submit', predictions: [...] }
         if (data.type === 'prediction_submit') {
@@ -124,6 +134,13 @@ export default function Game() {
           allowFullScreen
         ></iframe>
       </div>
+
+      {debugLogs.length > 0 && (
+        <div style={{ position: 'fixed', bottom: 10, left: 10, background: 'rgba(0,0,0,0.8)', color: 'lime', padding: '10px', fontSize: '10px', maxHeight: '200px', overflowY: 'auto', zIndex: 9999, maxWidth: '400px', wordWrap: 'break-word' }}>
+          <strong>Bridge Debug:</strong>
+          {debugLogs.map((log, i) => <div key={i}>{log}</div>)}
+        </div>
+      )}
     </div>
   );
 }

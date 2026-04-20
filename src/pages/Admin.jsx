@@ -569,6 +569,7 @@ function ResultsTab({ deploymentId }) {
                     <tr>
                       <th>Player</th>
                       <th>Submitted At</th>
+                      <th>Raw Picks (Payload)</th>
                       <th style={{ width: '150px' }}>Correct Answers</th>
                     </tr>
                   </thead>
@@ -577,6 +578,14 @@ function ResultsTab({ deploymentId }) {
                       <tr key={p.id}>
                         <td>{p.displayName || p.email}</td>
                         <td className="text-sm text-muted">{p.submittedAt ? new Date(p.submittedAt.toMillis()).toLocaleString() : 'N/A'}</td>
+                        <td>
+                          <details style={{ cursor: 'pointer', maxWidth: '300px' }}>
+                            <summary className="text-xs text-primary font-bold">View Picks Data</summary>
+                            <pre className="text-xs p-2 mt-2 bg-black bg-opacity-50 rounded overflow-x-auto" style={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
+                              {JSON.stringify(p.payload, null, 2)}
+                            </pre>
+                          </details>
+                        </td>
                         <td>
                           <input 
                             type="number" 

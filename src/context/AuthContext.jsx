@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
     if (d) {
       localStorage.setItem('deploymentId', d);
     } else {
-      d = localStorage.getItem('deploymentId');
+      d = localStorage.getItem('deploymentId') || 'default';
     }
     setDeploymentId(d);
 

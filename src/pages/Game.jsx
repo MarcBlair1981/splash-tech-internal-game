@@ -141,6 +141,17 @@ export default function Game() {
           {debugLogs.map((log, i) => <div key={i}>{log}</div>)}
         </div>
       )}
+
+      <div className="mt-4 pb-8 w-full flex justify-center">
+        <a 
+          href={iframeSrc} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="btn btn-primary"
+        >
+          Diagnostic: Open Game in New Tab
+        </a>
+      </div>
     </div>
   );
 }

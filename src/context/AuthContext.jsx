@@ -46,6 +46,18 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      // DEBUG: Force mock user
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+         const mockUser = {
+           uid: 'test12345',
+           email: 'marcblair@gmail.com', // Admin and player
+           displayName: 'Local Dev User'
+         };
+         setUser(mockUser);
+         await checkUserRole(mockUser);
+         return;
+      }
+
       if (currentUser) {
         setUser(currentUser);
         await checkUserRole(currentUser);

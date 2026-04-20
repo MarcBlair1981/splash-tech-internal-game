@@ -452,7 +452,7 @@ function ResultsTab({ deploymentId }) {
   useEffect(() => {
     const fetchSettledGames = async () => {
       if (!deploymentId) return;
-      const q = query(collection(db, `deployments/${deploymentId}/games`), where('status', '==', 'settled'));
+      const q = query(collection(db, `deployments/${deploymentId}/games`));
       const snap = await getDocs(q);
       setGames(snap.docs.map(d => ({ id: d.id, ...d.data() })));
     };
@@ -549,7 +549,7 @@ function ResultsTab({ deploymentId }) {
       <h2 className="mb-6">Scoring & Results</h2>
       
       <div className="form-group max-w-md">
-        <label className="form-label">Select Settled Game</label>
+        <label className="form-label">Select Game</label>
         <select className="form-control" value={selectedGame} onChange={e => setSelectedGame(e.target.value)}>
           <option value="">-- Choose game --</option>
           {games.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}

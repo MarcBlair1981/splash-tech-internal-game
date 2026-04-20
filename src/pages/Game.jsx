@@ -87,29 +87,39 @@ export default function Game() {
   const iframeSrc = `${hubUrl}?token=${sharedToken}&gameUuid=${game.gameUuid || ''}&language=en`;
 
   return (
-    <div className="animate-fade-in flex flex-col" style={{ height: 'calc(100vh - 120px)' }}>
-      <div className="mb-4 flex items-center justify-between">
+    <div className="animate-fade-in flex flex-col items-center" style={{ minHeight: 'calc(100vh - 120px)', width: '100%' }}>
+      <div className="mb-4 flex items-center justify-between w-full" style={{ maxWidth: '450px' }}>
         <button 
           onClick={() => navigate('/lobby')} 
-          className="btn btn-secondary"
-          style={{ padding: '8px 16px' }}
+          className="btn btn-secondary shadow-lg"
+          style={{ padding: '8px 16px', borderRadius: '999px' }}
         >
-          <ArrowLeft size={16} /> Back to Lobby
+          <ArrowLeft size={16} /> Lobby
         </button>
         <div className="flex items-center gap-4">
           {saveStatus && (
-            <span className="text-sm font-medium animate-fade-in" style={{ color: 'var(--color-secondary)' }}>
+            <span className="text-xs font-medium animate-fade-in badge badge-success" style={{ padding: '4px 10px' }}>
               {saveStatus}
             </span>
           )}
-          <h2 style={{ fontSize: '1.25rem' }}>{game.name}</h2>
+          <h2 style={{ fontSize: '1.25rem', margin: 0 }}>{game.name}</h2>
         </div>
       </div>
       
-      <div className="glass-panel flex-1 hidden-scrollbar" style={{ overflow: 'hidden', padding: 0 }}>
+      <div className="glass-panel hidden-scrollbar shadow-2xl" style={{ 
+        width: '100%', 
+        maxWidth: '450px', 
+        height: '800px', 
+        maxHeight: 'calc(100vh - 160px)', 
+        overflow: 'hidden', 
+        padding: 0, 
+        position: 'relative',
+        borderRadius: '24px',
+        border: '4px solid rgba(255,255,255,0.05)'
+      }}>
         <iframe 
           src={iframeSrc}
-          style={{ width: '100%', height: '100%', border: 'none' }}
+          style={{ width: '100%', height: '100%', border: 'none', position: 'absolute', top: 0, left: 0, background: '#000C35' }}
           title={game.name}
           allowFullScreen
         ></iframe>
